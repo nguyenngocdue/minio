@@ -1,5 +1,15 @@
-minio-setup/
-├── docker-compose.yml            # Chạy MinIO và expose nội bộ
-├── nginx/
-│   └── minio.deepbim.net.conf    # Cấu hình NGINX trên host (giữ port 443)
-└── README.md                     # Hướng dẫn từng bước
+~/minio/
+├── docker-compose.yaml
+├── nginx.conf
+├── ssl/
+│   ├── cert.pem         <- SSL cert (Let's Encrypt/self-signed)
+│   └── key.pem
+
+Cấp chứng chỉ SSL
+
+sudo apt install certbot
+sudo systemctl stop docker
+sudo certbot certonly --standalone -d minio.deepbim.net
+
+sudo cp /etc/letsencrypt/live/minio.deepbim.net/fullchain.pem ~/minio/ssl/cert.pem
+sudo cp /etc/letsencrypt/live/minio.deepbim.net/privkey.pem ~/minio/ssl/key.pem
