@@ -32,8 +32,6 @@ services:
       - ./ssl:/etc/nginx/ssl
     ports:
       - "9443:443"       # Dùng 9443 thay cho 443
-      - "9000:9000"
-      - "9001:9001"
     depends_on:
       - minio1
 
