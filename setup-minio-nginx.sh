@@ -1,6 +1,6 @@
 #!/bin/bash
 
-DOMAIN="mino.deepbim.net"
+DOMAIN="minio.deepbim.net"
 MINIO_PORT_UI=9000
 MINIO_PORT_CONSOLE=9001
 
