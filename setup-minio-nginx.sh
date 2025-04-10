@@ -4,10 +4,12 @@ DOMAIN="minio.deepbim.net"
 MINIO_PORT_UI=9000
 MINIO_PORT_CONSOLE=9001
 
-
+echo " =========================================="
 echo "🧼 Cleaning old configs (if any)..."
 sudo rm -f /etc/nginx/sites-available/minio.deepbim.net
 sudo rm -f /etc/nginx/sites-enabled/minio.deepbim.net
+
+echo " =========================================="
 
 echo "🔧 Creating NGINX config for MinIO..."
 
@@ -38,11 +40,13 @@ EOF
 echo "📌 Enabling config..."
 sudo ln -sf /etc/nginx/sites-available/minio.deepbim.net /etc/nginx/sites-enabled/
 sudo nginx -t && sudo systemctl reload nginx
+echo " =========================================="
+
 
 echo "🔐 Installing Certbot SSL..."
-sudo apt install certbot python3-certbot-nginx -y
 sudo certbot --nginx -d "$DOMAIN" --non-interactive --agree-tos -m duengocnguyen@gmail.com
 
+echo " =========================================="
 echo "✅ DONE! You can now access:"
 echo "👉 https://$DOMAIN"
 echo "👉 https://$DOMAIN/console"
