@@ -4,9 +4,6 @@ DOMAIN="mino.deepbim.net"
 MINIO_PORT_UI=9000
 MINIO_PORT_CONSOLE=9001
 
-echo "🔥 Installing Nginx..."
-sudo apt update
-sudo apt install nginx -y
 
 echo "🧼 Cleaning old configs (if any)..."
 sudo rm -f /etc/nginx/sites-available/minio.deepbim.net
