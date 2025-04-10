@@ -1,7 +1,6 @@
-# Settings and configurations that are common for all containers
+version: '3.8'
+
 x-minio-common: &minio-common
-  # image: quay.io/minio/minio:RELEASE.2025-02-28T09-55-16Z
-  # image: minio/minio:RELEASE.2024-06-29T01-20-47Z
   image: minio/minio:RELEASE.2023-03-09T23-16-13Z
   command: server --console-address ":9001" http://minio1/data{1...2}
   ports:
@@ -17,9 +16,6 @@ x-minio-common: &minio-common
     timeout: 20s
     retries: 3
 
-# starts 4 docker containers running minio server instances.
-# using nginx reverse proxy, load balancing, you can access
-# it through port 9000.
 services:
   minio1:
     <<: *minio-common
@@ -27,22 +23,20 @@ services:
     volumes:
       - data1-1:/data1
       - data1-2:/data2
-  # nginx:
-  #   image: nginx:1.19.2-alpine
-  #   hostname: nginx
-  #   volumes:
-  #     - ./nginx.conf:/etc/nginx/nginx.conf:ro
-  #     - ./ssl:/etc/nginx/ssl
-  #   ports:
-  #     - "9000:9000"
-  #     - "9001:9001"
-  #     - "443:443"
-  #   depends_on:
-  #     - minio1
 
-## By default this config uses default local driver,
-## For custom volumes replace with volume driver configuration.
+  nginx:
+    image: nginx:1.19.2-alpine
+    hostname: nginx
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./ssl:/etc/nginx/ssl
+    ports:
+      - "9443:443"       # Dùng 9443 thay cho 443
+      - "9000:9000"
+      - "9001:9001"
+    depends_on:
+      - minio1
+
 volumes:
   data1-1:
   data1-2:
-  

@@ -1,3 +1,6 @@
+git reset --hard
+chmod +x setup-minio-nginx.sh
+
 git pull
 #!/bin/bash
 DOMAIN="minio.deepbim.net"
