@@ -31,6 +31,7 @@ services:
       - ./ssl:/etc/nginx/ssl
     ports:
       - "9443:443"
+      - "8070:80"
     depends_on:
       - minio1
 
