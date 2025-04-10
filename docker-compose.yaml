@@ -14,3 +14,6 @@ services:
       - "9000:9000"
       - "9001:9001"
 
+volumes:
+  data1-1:
+  data1-2:
