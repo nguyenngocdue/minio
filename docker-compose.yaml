@@ -3,21 +3,21 @@ x-minio-common: &minio-common
   container_name: minio1_container_202
   command: server --console-address ":9001" http://minio1/data{1...2}
   ports:
-    - "9000:9000"
-    - "9001:9001"
+    - "9000:9000"    # S3 API port cho nginx proxy ra ngoài
+    - "9001:9001"    # Console web nội bộ
   environment:
     MINIO_ROOT_USER: minioadmin
     MINIO_ROOT_PASSWORD: minioadmin
     MINIO_PROMETHEUS_AUTH_TYPE: public
-    MINIO_SERVER_URL: "https://minio.deepbim.net:9000"           # public endpoint cho API
-    MINIO_BROWSER_REDIRECT_URL: https://minio.deepbim.net:9443 # public endpoint cho web console
-  # healthcheck:
-  #   test: ["CMD", "curl", "-f", "https://minio.deepbim.net:9000/minio/health/live"]
-  #   interval: 30s
-  #   timeout: 20s
-  #   retries: 3
-  # networks:
-  #   - prod_backend_network
+    MINIO_SERVER_URL: "https://minio.deepbim.net:9000"                # endpoint API S3
+    MINIO_BROWSER_REDIRECT_URL: "https://minio.deepbim.net:9443"      # endpoint Console web
+  healthcheck:
+    test: ["CMD", "curl", "-f", "http://minio1:9000/minio/health/live"]
+    interval: 30s
+    timeout: 20s
+    retries: 3
+  networks:
+    - prod_backend_network
 
 services:
   minio1:
@@ -26,7 +26,6 @@ services:
     volumes:
       - data1-1:/data1
       - data1-2:/data2
-    
 
   nginx:
     image: nginx:1.19.2-alpine
@@ -41,7 +40,7 @@ services:
     depends_on:
       - minio1
     networks:
-    - prod_backend_network
+      - prod_backend_network
 
 volumes:
   data1-1:
