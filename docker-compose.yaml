@@ -3,7 +3,7 @@ x-minio-common: &minio-common
   container_name: minio1_container_202
   command: server --console-address ":9001" http://minio1/data{1...2}
   ports:
-    - "9000:9000"    # S3 API port cho nginx proxy ra ngoài
+    # - "9000:9000"    # S3 API port cho nginx proxy ra ngoài
     - "9001:9001"    # Console web nội bộ
   environment:
     MINIO_ROOT_USER: minioadmin
