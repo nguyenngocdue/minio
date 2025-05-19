@@ -9,14 +9,15 @@ x-minio-common: &minio-common
     MINIO_ROOT_USER: minioadmin
     MINIO_ROOT_PASSWORD: minioadmin
     MINIO_PROMETHEUS_AUTH_TYPE: public
-    MINIO_BROWSER_REDIRECT_URL: https://minio.deepbim.net:9443
+    MINIO_BROWSER_REDIRECT_URL: https://minio.deepbim.net:9443 # public endpoint cho web console
+    MINIO_SERVER_URL: "https://minio.deepbim.net"          # public endpoint cho API
   healthcheck:
     test: ["CMD", "curl", "-f", "https://minio.deepbim.net:9000/minio/health/live"]
     interval: 30s
     timeout: 20s
     retries: 3
   networks:
-    - beta_backend_network
+    - prod_backend_network
 
 services:
   minio1:
@@ -25,6 +26,7 @@ services:
     volumes:
       - data1-1:/data1
       - data1-2:/data2
+    
 
   nginx:
     image: nginx:1.19.2-alpine
@@ -38,13 +40,13 @@ services:
     depends_on:
       - minio1
     networks:
-    - beta_backend_network
+    - prod_backend_network
 
 volumes:
   data1-1:
   data1-2:
 
 networks:
-  beta_backend_network:
+  prod_backend_network:
     external: true
-    name: beta_backend_network
+    name: prod_backend_network
